@@ -11,16 +11,14 @@ const sass = require("gulp-sass")(require("sass"));
 const fileInclude = require("gulp-file-include");
 const htmlmin = require("gulp-htmlmin");
 const browserSync = require("browser-sync").create();
-// const concat = require("gulp-concat");
-// const cssimport = require("gulp-cssimport");
 const autoprefixer = require("gulp-autoprefixer");
 const csso = require("gulp-csso");
 const rename = require("gulp-rename");
-// const shorthand = require("gulp-shorthand");
 
 var paths = {
   html: ["src/html/*.html"],
   css: ["src/css/**/*.css"],
+  scss: ["src/scss/**/*.scss"],
 };
 var watchedBrowserify = watchify(
   browserify({
@@ -47,27 +45,35 @@ function html() {
 }
 
 function css() {
-  return (
-    gulp
-      .src(paths.css, { sourcemaps: true })
-      // .pipe(sourcemaps.init())
-      // .pipe(concat("main.css"))
-
-      // .pipe(cssimport())
-      // .pipe(sass().on("error", sass.logError))
-      // .pipe(sourcemaps.write("."))
-      .pipe(gulp.dest("dist/css"), { sourcemaps: true })
-  );
+  return gulp
+    .src(paths.css, { sourcemaps: true })
+    .pipe(autoprefixer())
+    .pipe(gulp.dest("dist/css", { sourcemaps: true }))
+    .pipe(rename({ suffix: ".min" }))
+    .pipe(csso())
+    .pipe(gulp.dest("dist/css"), { sourcemaps: true });
 }
 
 function scss() {
-  return gulp
-    .src("src/scss/**/*.scss")
-    .pipe(sourcemaps.init())
-    .pipe(sass().on("error", sass.logError))
-    .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist"));
+  return (
+    gulp
+      .src(paths.scss, { sourcemaps: true })
+      .pipe(sass())
+      // .pipe(autoprefixer())
+      .pipe(gulp.dest("dist/css", { sourcemaps: true }))
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(csso())
+      .pipe(gulp.dest("dist/css"), { sourcemaps: true })
+  );
 }
+// function scss() {
+//   return gulp
+//     .src("src/scss/**/*.scss")
+//     .pipe(sourcemaps.init())
+//     .pipe(sass().on("error", sass.logError))
+//     .pipe(sourcemaps.write("."))
+//     .pipe(gulp.dest("dist"));
+// }
 
 function bundle() {
   return watchedBrowserify
@@ -89,7 +95,7 @@ function watch() {
   });
   // gulp.watch("dist/").on("all", browsersync.reload);
   gulp.watch(paths.html, html).on("all", browserSync.reload);
-  gulp.watch(paths.css, css).on("all", browserSync.reload);
+  gulp.watch(paths.scss, scss).on("all", browserSync.reload);
   // gulp.watch(paths.scripts.src, scripts);
   // gulp.watch(paths.images.src, img);
 }
@@ -97,7 +103,7 @@ function watch() {
 exports.default = gulp.series(
   //   clean,
   html,
-  gulp.parallel(css, bundle),
+  gulp.parallel(scss, bundle),
   watch
 );
 // gulp.task("default", gulp.series(gulp.parallel("copy-html", "scss"), bundle));

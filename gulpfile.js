@@ -14,6 +14,11 @@ const browserSync = require("browser-sync").create();
 const autoprefixer = require("gulp-autoprefixer");
 const csso = require("gulp-csso");
 const rename = require("gulp-rename");
+var handlebars = require("gulp-handlebars");
+var wrap = require("gulp-wrap");
+var declare = require("gulp-declare");
+var concat = require("gulp-concat");
+var defineModule = require("gulp-define-module");
 
 var paths = {
   html: ["src/html/*.html"],
@@ -66,14 +71,6 @@ function scss() {
       .pipe(gulp.dest("dist/css"), { sourcemaps: true })
   );
 }
-// function scss() {
-//   return gulp
-//     .src("src/scss/**/*.scss")
-//     .pipe(sourcemaps.init())
-//     .pipe(sass().on("error", sass.logError))
-//     .pipe(sourcemaps.write("."))
-//     .pipe(gulp.dest("dist"));
-// }
 
 function bundle() {
   return watchedBrowserify
@@ -85,6 +82,22 @@ function bundle() {
     .pipe(uglify())
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("dist"));
+}
+
+function templates() {
+  return gulp
+    .src("src/templates/**/*.hbs")
+    .pipe(handlebars())
+    .pipe(wrap("Handlebars.template(<%= contents %>)"))
+    .pipe(
+      declare({
+        namespace: "src.templates",
+        noRedeclare: true,
+      })
+    )
+    .pipe(defineModule("node"))
+    .pipe(gulp.dest("dist/templates/"))
+    .pipe(browserSync.stream());
 }
 
 function watch() {
@@ -103,7 +116,7 @@ function watch() {
 exports.default = gulp.series(
   //   clean,
   html,
-  gulp.parallel(scss, bundle),
+  gulp.parallel(scss, bundle, templates),
   watch
 );
 // gulp.task("default", gulp.series(gulp.parallel("copy-html", "scss"), bundle));

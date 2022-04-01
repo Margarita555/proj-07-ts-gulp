@@ -1,0 +1,44 @@
+{{#each this}}
+  <li class="client--bank">
+    <form class="clientForm">
+      <label class="label">
+        Client id:
+        <input class="input input--bank" type="text" name="id" value="{{id}}" />
+      </label>
+      <label class="label">
+        Name:
+        <input
+          class="input input--bank"
+          type="text"
+          name="name"
+          value="{{name}}"
+        />
+      </label>
+      <label class="label">
+        Registration date:
+        <input
+          class="input input--bank"
+          type="text"
+          name="date"
+          value="{{registrationDate}}"
+        />
+      </label>
+      <label class="label">
+        Is active:
+        <input
+          class="input input--bank"
+          type="text"
+          name="isActive"
+          value="{{isActive}}"
+        />
+      </label>
+      <button class="btn" data-save="{{id}}" type="submit">Save</button>
+      <button class="btn" data-remove="{{id}}" type="button">Delete</button>
+    </form>
+    <h4 class="accounts--bank">Accounts</h4>
+    <button class="btn" data-debit="{{id}}" type="button">Debit accounts</button>
+    <button class="btn" data-credit="{{id}}" type="button">Credit accounts</button>
+    <ul class="accountsContainer" id="{{id}}">
+    </ul>
+  </li>
+{{/each}}

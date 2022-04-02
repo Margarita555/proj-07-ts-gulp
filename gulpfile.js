@@ -19,6 +19,8 @@ var wrap = require("gulp-wrap");
 var declare = require("gulp-declare");
 var concat = require("gulp-concat");
 var defineModule = require("gulp-define-module");
+const hb = require("gulp-hb");
+const hbLayouts = require("handlebars-layouts");
 
 var paths = {
   html: ["src/html/*.html"],
@@ -36,7 +38,7 @@ var watchedBrowserify = watchify(
     .plugin(tsify)
     .transform("babelify", {
       presets: ["es2015"],
-      extensions: [".ts"],
+      extensions: [".ts", ".hbs"],
     })
 );
 
@@ -83,21 +85,76 @@ function bundle() {
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("dist"));
 }
+// gulp.task("views", function () {
+//   let hbStream = hb({
+//     //debug: true
+//   })
+//     .partials(".src/templates/**/*.{hbs,html}")
+
+//     // Data
+//     .data(".src/js/**/*.{js,json}")
+//     // .data(config.metadata)
+
+//     // Helpers
+//     .helpers(hbLayouts)
+//     .helpers(".src/js/*.js");
+
+//   return gulp
+//     .src("src/templates/**/*.hbs")
+//     .pipe(hbStream)
+//     .pipe(gulp.dest("dist/templates/"))
+//     .on("end", browserSync.reload);
+// });
+
+// gulp.task("templates", function () {
+//   gulp
+//     .src(["src/templates/*.hbs"])
+//     .pipe(handlebars())
+//     .pipe(defineModule("node"))
+//     .pipe(gulp.dest("dist/templates/"));
+// });
 
 function templates() {
-  return gulp
-    .src("src/templates/**/*.hbs")
-    .pipe(handlebars())
-    .pipe(wrap("Handlebars.template(<%= contents %>)"))
-    .pipe(
-      declare({
-        namespace: "src.templates",
-        noRedeclare: true,
-      })
-    )
-    .pipe(defineModule("node"))
-    .pipe(gulp.dest("dist/templates/"))
-    .pipe(browserSync.stream());
+  // return gulp
+  //   .src("src/templates/**/*.hbs")
+  //   .pipe(handlebars())
+  //   .pipe(wrap("Handlebars.template(<%= contents %>)"))
+  //   .pipe(
+  //     declare({
+  //       namespace: "src.templates",
+  //       noRedeclare: true,
+  //     })
+  //   )
+  //   .pipe(defineModule("node"))
+  //   .pipe(gulp.dest("dist/templates/"))
+  //   .pipe(browserSync.stream());
+  return (
+    gulp
+      .src("src/templates/**/*.hbs")
+      .pipe(handlebars({ handlebars: require("handlebars") }))
+      .pipe(wrap("Handlebars.template(<%= contents %>)"))
+      // Declare template functions as properties and sub-properties of exports
+      .pipe(
+        declare({
+          root: "exports",
+          noRedeclare: true, // Avoid duplicate declarations
+          processName: function (filePath) {
+            // Allow nesting based on path using gulp-declare's processNameByPath()
+            // You can remove this option completely if you aren't using nested folders
+            // Drop the templates/ folder from the namespace path by removing it from the filePath
+            return declare.processNameByPath(
+              filePath.replace("src/templates/", "")
+            );
+          },
+        })
+      )
+      // Concatenate down to a single file
+      .pipe(concat("index.js"))
+      // Add the Handlebars module in the final output
+      .pipe(wrap('var Handlebars = require("handlebars");\n <%= contents %>'))
+      // Write the output into the templates folder
+      .pipe(gulp.dest("dist/templates/"))
+  );
 }
 
 function watch() {
@@ -109,6 +166,7 @@ function watch() {
   // gulp.watch("dist/").on("all", browsersync.reload);
   gulp.watch(paths.html, html).on("all", browserSync.reload);
   gulp.watch(paths.scss, scss).on("all", browserSync.reload);
+  // gulp.watch("src/templates/**/*.hbs", "views").on("all", browserSync.reload);
   // gulp.watch(paths.scripts.src, scripts);
   // gulp.watch(paths.images.src, img);
 }

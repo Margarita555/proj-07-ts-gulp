@@ -1,10 +1,23 @@
+// const templates = require("../../../templ");
+// const bankTemplate = templates.bankmarkup();
+
+console.log("c");
+// const g = require("../../../dist/templates/index.js");
+// console.log(g);
+// console.log(g.MyApp());
+// const bm = MyApp.templates.bank - markup;
+
+const bankTemplate = require("../../templates/bankmarkup.hbs");
+const g = Handlebars.compile(bankTemplate);
+console.log(g);
 // import bankTemplate from "../../templates/bank-markup.hbs";
 // import debitTemplate from "../templates/debit-markup.hbs";
 // import creditTemplate from "../templates/credit-markup.hbs";
+
 // import { nanoid } from "nanoid";
-import { fetchBank } from "./bank-calculation";
-import getRefs from "./refs";
-const { form, debitForm, creditForm, bankContainer } = getRefs();
+// import { fetchBank } from "./bank-calculation";
+// import getRefs from "./refs";
+// const { form, debitForm, creditForm, bankContainer } = getRefs();
 
 // let bank: IClient[] = fetchBank();
 // renderBank(bank);
@@ -21,37 +34,37 @@ const { form, debitForm, creditForm, bankContainer } = getRefs();
 // bankContainer.addEventListener("click", onDeleteDebitAccountlick);
 // bankContainer.addEventListener("click", onDeleteCreditAccountClick);
 
-interface IDebit {
-  balance: number;
-  activity: number;
-  activityDate: string | File | null;
-  cardExpiryDate: string | File | null;
-  currency: string | File | null;
-  id: string | File | null;
-  accountId: string | File | null;
-}
+// interface IDebit {
+//   balance: number;
+//   activity: number;
+//   activityDate: string | File | null;
+//   cardExpiryDate: string | File | null;
+//   currency: string | File | null;
+//   id: string | File | null;
+//   accountId: string | File | null;
+// }
 
-interface ICredit {
-  balance: number;
-  creditLimit: number;
-  activity: number;
-  activityDate: string | File | null;
-  cardExpiryDate: string | File | null;
-  currency: string | File | null;
-  id: string | File | null;
-  accountId: string | File | null;
-}
+// interface ICredit {
+//   balance: number;
+//   creditLimit: number;
+//   activity: number;
+//   activityDate: string | File | null;
+//   cardExpiryDate: string | File | null;
+//   currency: string | File | null;
+//   id: string | File | null;
+//   accountId: string | File | null;
+// }
 
-interface IClient {
-  id: string;
-  name: string | File | null;
-  registrationDate: string | File | null;
-  isActive: boolean;
-  accounts: {
-    debit?: IDebit[];
-    credit?: ICredit[];
-  };
-}
+// interface IClient {
+//   id: string;
+//   name: string | File | null;
+//   registrationDate: string | File | null;
+//   isActive: boolean;
+//   accounts: {
+//     debit?: IDebit[];
+//     credit?: ICredit[];
+//   };
+// }
 
 // function renderBank(bank: IClient[]): void {
 //   bankContainer.innerHTML = "";
@@ -59,7 +72,7 @@ interface IClient {
 //   bankContainer.insertAdjacentHTML("beforeend", bankMarkup);
 // }
 
-// function onFormSubmit(event: any): void {
+// function onFormSubmit(event: Event & { target: Element }): void {
 //   event.preventDefault();
 //   const formData = new FormData(event.target.closest("form"));
 //   const name = formData.get("name");
@@ -67,7 +80,7 @@ interface IClient {
 //   const isActive: boolean = formData.get("isActive") === "true";
 //   const id: string = nanoid();
 
-//   const client = {
+//   const client: IClient = {
 //     id,
 //     name,
 //     registrationDate,
@@ -83,7 +96,7 @@ interface IClient {
 //   form.reset();
 // }
 
-// function onDebitFormSubmit(event: any): void {
+// function onDebitFormSubmit(event: Event & { target: Element }): void {
 //   event.preventDefault();
 //   const formData = new FormData(event.target.closest("form"));
 //   const id = formData.get("id");
@@ -110,7 +123,7 @@ interface IClient {
 //   debitForm.reset();
 // }
 
-// function onCreditFormSubmit(event: any): void {
+// function onCreditFormSubmit(event: Event & { target: Element }): void {
 //   event.preventDefault();
 //   const formData = new FormData(event.target.closest("form"));
 
@@ -139,7 +152,7 @@ interface IClient {
 //   creditForm.reset();
 // }
 
-// function onDebitAccountClick(event: any): void {
+// function onDebitAccountClick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-debit")) {
 //     return;
 //   }
@@ -167,7 +180,7 @@ interface IClient {
 //   accountsContainer?.insertAdjacentHTML("beforeend", creditMarkup);
 // }
 
-// function onSaveClientDataClick(event: any): void {
+// function onSaveClientDataClick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-save")) {
 //     return;
 //   }
@@ -183,7 +196,7 @@ interface IClient {
 //   localStorage.setItem("bank", JSON.stringify(bank));
 // }
 
-// function onDeleteBtnClick(event: any): void {
+// function onDeleteBtnClick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-remove")) {
 //     return;
 //   }
@@ -196,7 +209,7 @@ interface IClient {
 //   renderBank(updatedBank);
 // }
 
-// function onSaveDebitAccountClick(event: any): void {
+// function onSaveDebitAccountClick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-debitsave")) {
 //     return;
 //   }
@@ -220,7 +233,7 @@ interface IClient {
 //   localStorage.setItem("bank", JSON.stringify(bank));
 // }
 
-// function onSaveCreditAccountClick(event: any): void {
+// function onSaveCreditAccountClick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-creditsave")) {
 //     return;
 //   }
@@ -245,7 +258,7 @@ interface IClient {
 //   localStorage.setItem("bank", JSON.stringify(bank));
 // }
 
-// function onDeleteDebitAccountlick(event: any): void {
+// function onDeleteDebitAccountlick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-debitremove")) {
 //     return;
 //   }
@@ -262,7 +275,7 @@ interface IClient {
 //   renderBank(bank);
 // }
 
-// function onDeleteCreditAccountClick(event: any): void {
+// function onDeleteCreditAccountClick(event: Event & { target: Element }): void {
 //   if (!event.target.hasAttribute("data-creditremove")) {
 //     return;
 //   }

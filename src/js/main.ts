@@ -1,13 +1,18 @@
-import { sayHello } from "./greet";
-
+function sayHello(name: string) {
+  return `Hello from ${name}!`;
+}
 function showHello(divName: string, name: string) {
   console.log("a!");
   const elt = document.getElementById(divName);
   elt.innerText = sayHello(name);
 }
 showHello("greeting", "TypeScript");
+// import "./block-one";
+import "./block-two";
+import "./block-three";
 import "./block-four/bank";
 import "./block-four/bank-calculation";
+import "./block-one";
 // "compilerOptions": {
 //     "module": "esnext",
 //     "target": "es2016",

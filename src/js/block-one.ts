@@ -1,3 +1,4 @@
+console.log("d");
 declare global {
   interface String {
     mySplit(seperator?: string): string[];

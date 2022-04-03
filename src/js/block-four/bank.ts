@@ -7,9 +7,13 @@ console.log("c");
 // console.log(g.MyApp());
 // const bm = MyApp.templates.bank - markup;
 
-const bankTemplate = require("../../templates/bankmarkup.hbs");
+const Handlebars = require("handlebars");
+const template = Handlebars.compile("Name: {{name}}");
+console.log(template({ name: "Nils" }));
+// const bankTemplate = require("../../templates/bank.hbs");
+// const template1 = Handlebars.compile(require("../../templates/bank.hbs"));
 // const g = Handlebars.compile(bankTemplate);
-console.log("g");
+// console.log(template1);
 // import bankTemplate from "../../templates/bank-markup.hbs";
 // import debitTemplate from "../templates/debit-markup.hbs";
 // import creditTemplate from "../templates/credit-markup.hbs";
@@ -19,10 +23,10 @@ import { fetchBank } from "./bank-calculation";
 import getRefs from "./refs";
 const { form, debitForm, creditForm, bankContainer } = getRefs();
 
-let bank: IClient[] = fetchBank();
-renderBank(bank);
+// let bank: IClient[] = fetchBank();
+// renderBank(bank);
 
-form.addEventListener("submit", onFormSubmit);
+// form.addEventListener("submit", onFormSubmit);
 // debitForm.addEventListener("submit", onDebitFormSubmit);
 // creditForm.addEventListener("submit", onCreditFormSubmit);
 // bankContainer.addEventListener("click", onDeleteBtnClick);
@@ -66,35 +70,35 @@ interface IClient {
   };
 }
 
-function renderBank(bank: IClient[]): void {
-  bankContainer.innerHTML = "";
-  const bankMarkup: string = bankTemplate(bank);
-  bankContainer.insertAdjacentHTML("beforeend", bankMarkup);
-}
+// function renderBank(bank: IClient[]): void {
+//   bankContainer.innerHTML = "";
+//   const bankMarkup: string = bankTemplate(bank);
+//   bankContainer.insertAdjacentHTML("beforeend", bankMarkup);
+// }
 
-function onFormSubmit(event: Event & { target: Element }): void {
-  event.preventDefault();
-  const formData = new FormData(event.target.closest("form"));
-  const name = formData.get("name");
-  const registrationDate = formData.get("date");
-  const isActive: boolean = formData.get("isActive") === "true";
-  const id: string = nanoid();
+// function onFormSubmit(event: Event & { target: Element }): void {
+//   event.preventDefault();
+//   const formData = new FormData(event.target.closest("form"));
+//   const name = formData.get("name");
+//   const registrationDate = formData.get("date");
+//   const isActive: boolean = formData.get("isActive") === "true";
+//   const id: string = nanoid();
 
-  const client: IClient = {
-    id,
-    name,
-    registrationDate,
-    isActive,
-    accounts: {
-      debit: [],
-      credit: [],
-    },
-  };
-  bank.push(client);
-  localStorage.setItem("bank", JSON.stringify(bank));
-  renderBank(bank);
-  form.reset();
-}
+//   const client: IClient = {
+//     id,
+//     name,
+//     registrationDate,
+//     isActive,
+//     accounts: {
+//       debit: [],
+//       credit: [],
+//     },
+//   };
+//   bank.push(client);
+//   localStorage.setItem("bank", JSON.stringify(bank));
+//   renderBank(bank);
+//   form.reset();
+// }
 
 // function onDebitFormSubmit(event: Event & { target: Element }): void {
 //   event.preventDefault();

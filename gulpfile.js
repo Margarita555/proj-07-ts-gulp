@@ -21,6 +21,7 @@ var concat = require("gulp-concat");
 var defineModule = require("gulp-define-module");
 const hb = require("gulp-hb");
 const hbLayouts = require("handlebars-layouts");
+const del = require("del");
 
 var paths = {
   html: ["src/html/*.html"],
@@ -41,6 +42,10 @@ var watchedBrowserify = watchify(
       extensions: [".ts", ".hbs"],
     })
 );
+
+function clear() {
+  return del("./dist");
+}
 
 function html() {
   return gulp
@@ -173,7 +178,7 @@ function watch() {
 }
 
 exports.default = gulp.series(
-  //   clean,
+  clear,
   html,
   gulp.parallel(scss, bundle, templates),
   watch

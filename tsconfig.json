@@ -1,5 +1,5 @@
 {
-  "files": ["src/js/main.ts", "src/templates/bankmarkup.hbs"],
+  "files": ["src/js/main.ts"],
   "compilerOptions": {
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -9,6 +9,5 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "lib": ["es2015", "dom"]
-  },
-  "include": ["src/**/*.hbs"]
+  }
 }

@@ -8,21 +8,21 @@ console.log("c");
 // const bm = MyApp.templates.bank - markup;
 
 const bankTemplate = require("../../templates/bankmarkup.hbs");
-const g = Handlebars.compile(bankTemplate);
-console.log(g);
+// const g = Handlebars.compile(bankTemplate);
+console.log("g");
 // import bankTemplate from "../../templates/bank-markup.hbs";
 // import debitTemplate from "../templates/debit-markup.hbs";
 // import creditTemplate from "../templates/credit-markup.hbs";
 
-// import { nanoid } from "nanoid";
-// import { fetchBank } from "./bank-calculation";
-// import getRefs from "./refs";
-// const { form, debitForm, creditForm, bankContainer } = getRefs();
+import { nanoid } from "nanoid";
+import { fetchBank } from "./bank-calculation";
+import getRefs from "./refs";
+const { form, debitForm, creditForm, bankContainer } = getRefs();
 
-// let bank: IClient[] = fetchBank();
-// renderBank(bank);
+let bank: IClient[] = fetchBank();
+renderBank(bank);
 
-// form.addEventListener("submit", onFormSubmit);
+form.addEventListener("submit", onFormSubmit);
 // debitForm.addEventListener("submit", onDebitFormSubmit);
 // creditForm.addEventListener("submit", onCreditFormSubmit);
 // bankContainer.addEventListener("click", onDeleteBtnClick);
@@ -34,67 +34,67 @@ console.log(g);
 // bankContainer.addEventListener("click", onDeleteDebitAccountlick);
 // bankContainer.addEventListener("click", onDeleteCreditAccountClick);
 
-// interface IDebit {
-//   balance: number;
-//   activity: number;
-//   activityDate: string | File | null;
-//   cardExpiryDate: string | File | null;
-//   currency: string | File | null;
-//   id: string | File | null;
-//   accountId: string | File | null;
-// }
+interface IDebit {
+  balance: number;
+  activity: number;
+  activityDate: string | File | null;
+  cardExpiryDate: string | File | null;
+  currency: string | File | null;
+  id: string | File | null;
+  accountId: string | File | null;
+}
 
-// interface ICredit {
-//   balance: number;
-//   creditLimit: number;
-//   activity: number;
-//   activityDate: string | File | null;
-//   cardExpiryDate: string | File | null;
-//   currency: string | File | null;
-//   id: string | File | null;
-//   accountId: string | File | null;
-// }
+interface ICredit {
+  balance: number;
+  creditLimit: number;
+  activity: number;
+  activityDate: string | File | null;
+  cardExpiryDate: string | File | null;
+  currency: string | File | null;
+  id: string | File | null;
+  accountId: string | File | null;
+}
 
-// interface IClient {
-//   id: string;
-//   name: string | File | null;
-//   registrationDate: string | File | null;
-//   isActive: boolean;
-//   accounts: {
-//     debit?: IDebit[];
-//     credit?: ICredit[];
-//   };
-// }
+interface IClient {
+  id: string;
+  name: string | File | null;
+  registrationDate: string | File | null;
+  isActive: boolean;
+  accounts: {
+    debit?: IDebit[];
+    credit?: ICredit[];
+  };
+}
 
-// function renderBank(bank: IClient[]): void {
-//   bankContainer.innerHTML = "";
-//   const bankMarkup: string = bankTemplate(bank);
-//   bankContainer.insertAdjacentHTML("beforeend", bankMarkup);
-// }
+function renderBank(bank: IClient[]): void {
+  bankContainer.innerHTML = "";
+  const bankMarkup: string = bankTemplate(bank);
+  bankContainer.insertAdjacentHTML("beforeend", bankMarkup);
+}
 
-// function onFormSubmit(event: Event & { target: Element }): void {
-//   event.preventDefault();
-//   const formData = new FormData(event.target.closest("form"));
-//   const name = formData.get("name");
-//   const registrationDate = formData.get("date");
-//   const isActive: boolean = formData.get("isActive") === "true";
-//   const id: string = nanoid();
+function onFormSubmit(event: Event & { target: Element }): void {
+  event.preventDefault();
+  const formData = new FormData(event.target.closest("form"));
+  const name = formData.get("name");
+  const registrationDate = formData.get("date");
+  const isActive: boolean = formData.get("isActive") === "true";
+  const id: string = nanoid();
 
-//   const client: IClient = {
-//     id,
-//     name,
-//     registrationDate,
-//     isActive,
-//     accounts: {
-//       debit: [],
-//       credit: [],
-//     },
-//   };
-//   bank.push(client);
-//   localStorage.setItem("bank", JSON.stringify(bank));
-//   renderBank(bank);
-//   form.reset();
-// }
+  const client: IClient = {
+    id,
+    name,
+    registrationDate,
+    isActive,
+    accounts: {
+      debit: [],
+      credit: [],
+    },
+  };
+  bank.push(client);
+  localStorage.setItem("bank", JSON.stringify(bank));
+  renderBank(bank);
+  form.reset();
+}
 
 // function onDebitFormSubmit(event: Event & { target: Element }): void {
 //   event.preventDefault();

@@ -2,8 +2,13 @@
   "files": ["src/js/main.ts", "src/templates/bankmarkup.hbs"],
   "compilerOptions": {
     "moduleResolution": "node",
+    "noEmitOnError": true,
+    "removeComments": true,
     "noImplicitAny": true,
-    "target": "es2016"
+    "target": "es2015",
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "lib": ["es2015", "dom"]
   },
   "include": ["src/**/*.hbs"]
 }

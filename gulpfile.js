@@ -166,6 +166,7 @@ function watch() {
   // gulp.watch("dist/").on("all", browsersync.reload);
   gulp.watch(paths.html, html).on("all", browserSync.reload);
   gulp.watch(paths.scss, scss).on("all", browserSync.reload);
+  gulp.watch("src/templates/**/*.hbs", templates).on("all", browserSync.reload);
   // gulp.watch("src/templates/**/*.hbs", "views").on("all", browserSync.reload);
   // gulp.watch(paths.scripts.src, scripts);
   // gulp.watch(paths.images.src, img);

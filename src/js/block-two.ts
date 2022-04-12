@@ -1,4 +1,3 @@
-console.log("e");
 declare global {
   interface Function {
     myBind(context: any, ...rest: unknown[]): unknown;

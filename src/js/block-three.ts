@@ -1,4 +1,3 @@
-console.log("f");
 interface INode {
   value: number | INode;
   left: INode | null;

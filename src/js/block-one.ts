@@ -201,20 +201,6 @@ class Rectangle {
   }
 }
 
-const RectangleConstructor = function (width: number, height: number) {
-  if (width <= 0 || height <= 0) {
-    throw new Error("Number is invalid");
-  }
-  this.width = width;
-  this.height = height;
-};
-RectangleConstructor.prototype.perimeter = function (): number {
-  return (this.width + this.height) * 2;
-};
-RectangleConstructor.prototype.square = function (): number {
-  return this.width * this.height;
-};
-
 class Triangle {
   height: number;
   base: number;
@@ -236,27 +222,6 @@ class Triangle {
   }
 }
 
-const TriangleConstructor = function (
-  height: number,
-  base: number,
-  side1: number,
-  side2: number
-) {
-  if (height <= 0 || base <= 0 || side1 <= 0 || side2 <= 0) {
-    throw new Error("Number is invalid");
-  }
-  this.height = height;
-  this.base = base;
-  this.side1 = side1;
-  this.side2 = side2;
-};
-TriangleConstructor.prototype.perimeter = function (): number {
-  return this.side1 + this.side2 + this.base;
-};
-TriangleConstructor.prototype.square = function (): number {
-  return (this.height * this.base) / 2;
-};
-
 class Circle {
   radius: number;
   constructor(radius: number) {
@@ -270,20 +235,6 @@ class Circle {
     return Math.PI * this.radius ** 2;
   }
 }
-
-const CircleConstructor = function (radius: number) {
-  if (radius <= 0) {
-    throw new Error("Radius is not valid");
-  }
-  this.radius = radius;
-};
-
-CircleConstructor.prototype.perimeter = function (): number {
-  return 2 * Math.PI * this.radius;
-};
-CircleConstructor.prototype.square = function (): number {
-  return Math.PI * this.radius ** 2;
-};
 
 // // ============ TASK 8 ==========================
 // // Вычислить факториал числа. Реализовать с помощью рекурсии. Реализовать мемоизированную функцию вычисления факториала.
@@ -307,7 +258,7 @@ interface IMemo {
   [key: number]: number;
 }
 
-const factorialByMemo = (function () {
+const factorialByMemo = (function (): (arg: number) => number {
   let memo: IMemo = {};
   return function factorial(num: number): number {
     if (num === 0) {
@@ -355,7 +306,7 @@ function arrayElementsSumRecursion(
 // // ============ TASK 10 ==========================
 // // Посчитать количество элементов массива которые (Нулевые, отрицательные, положительные, простые числа).
 
-function countElements(arr: number[], callback: MyCallback) {
+function countElements(arr: number[], callback: MyCallback): number {
   let amount: number = 0;
 
   for (const element of arr) {
@@ -402,7 +353,7 @@ function myMathPow(base: number, pow: number): number {
 // // ============ TASK 12==========================
 // // Пункты 9 и 10 выполнить для двумерных массивов.
 
-function sum(arr: number[][], callback: MyCallback) {
+function sum(arr: number[][], callback: MyCallback): number {
   let sum: number = 0;
 
   for (let i: number = 0; i < arr.length; i++) {
@@ -415,7 +366,7 @@ function sum(arr: number[][], callback: MyCallback) {
   return sum;
 }
 
-function countElementsQuantity(arr: number[][], callback: MyCallback) {
+function countElementsQuantity(arr: number[][], callback: MyCallback): number {
   let amount: number = 0;
 
   for (let i: number = 0; i < arr.length; i += 1) {
@@ -696,10 +647,10 @@ interface IFibonacciMemo {
   [key: number]: number;
 }
 
-const fibonacciMemo = (function () {
+const fibonacciMemo = (function (): (arg: number) => number {
   let memo: IFibonacciMemo = {};
 
-  return function fibonacci(num: number) {
+  return function fibonacci(num: number): number {
     if (memo[num]) {
       return memo[num];
     }
@@ -791,11 +742,11 @@ function countBits(num: number) {
 }
 
 // //  Написать свою реализацию для ~, двумя способами
-function transformBitNotNumber(num: number) {
+function transformBitNotNumber(num: number): number {
   return num ^ -1;
 }
 
-function transformBitNotNumber2(num: number) {
+function transformBitNotNumber2(num: number): number {
   let numeral: number = num;
   for (let i = 0; i < 32; i++) {
     numeral ^= 1 << i;
@@ -803,7 +754,7 @@ function transformBitNotNumber2(num: number) {
   return numeral;
 }
 
-function transformBitNotNumber3(num: number) {
+function transformBitNotNumber3(num: number): number {
   return -num - 1;
 }
 

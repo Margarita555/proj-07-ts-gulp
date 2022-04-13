@@ -3,8 +3,8 @@ interface INode {
   left: INode | null;
   right: INode | null;
   insert(num: number): void;
-  search(num: number): null | number | ((num: number) => any);
-  delete(num: number, currentNode: INode): any;
+  search(num: number): null | number | ((num: number) => number | null);
+  delete(num: number, currentNode: INode): INode;
 }
 
 class TreeNode implements INode {
@@ -37,7 +37,7 @@ class TreeNode implements INode {
     }
   }
 
-  search(num: number): null | number | ((num: number) => any) {
+  search(num: number): null | number | ((num: number) => number | null) {
     if (this.value === null) {
       return null;
     }
@@ -50,7 +50,7 @@ class TreeNode implements INode {
     return this.right!.search(num);
   }
 
-  delete(num: number | INode, currentNode: INode | null): any {
+  delete(num: number | INode, currentNode: INode | null): INode {
     let current: INode | null = currentNode || this;
     if (num < current.value) {
       current.left = this.delete(num, current.left);

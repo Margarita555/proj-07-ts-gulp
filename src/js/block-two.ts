@@ -1,6 +1,6 @@
 declare global {
   interface Function {
-    myBind(context: any, ...rest: unknown[]): unknown;
+    myBind(context: any, ...rest: any[]): any;
   }
 }
 
@@ -17,11 +17,11 @@ Function.prototype.myBind = function (context, ...rest) {
 
 declare global {
   interface Function {
-    myCall(context: any): unknown;
+    myCall(context: any): any;
   }
 }
 
-Function.prototype.myCall = function (context, ...args: unknown[]) {
+Function.prototype.myCall = function (context, ...args: any[]) {
   const callback: unique symbol = Symbol();
   context[callback] = this;
   const result = context[callback](...args);
@@ -108,17 +108,21 @@ Array.prototype.myForEach = function (callback) {
   }
 };
 
+interface IObject {
+  [key: string]: any;
+}
+
 declare global {
   interface Array<T> {
-    myReduce<Type>(
+    myReduce(
       callback: (
-        accumulator: Type,
+        accumulator: any[] | number | IObject,
         arrItem: T,
         index?: number,
         arr?: T[]
-      ) => Type,
-      acc?: any
-    ): Type;
+      ) => any[] | number | IObject,
+      acc?: any[] | number | IObject
+    ): any[] | number | IObject;
   }
 }
 

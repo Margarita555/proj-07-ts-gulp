@@ -26,10 +26,10 @@ Function.prototype.myBind = function (context, ...rest) {
 declare global {
   interface Function {
     myCall<T, R>(
-      this: (this: IObject, ...args: T[]) => R,
+      this: (this: IObject, ...args: T[]) => R | void,
       thisArg: IObject,
       ...args: T[]
-    ): (...args: T[]) => R;
+    ): R | void;
   }
 }
 

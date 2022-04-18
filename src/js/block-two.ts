@@ -1,13 +1,21 @@
 declare global {
   interface Function {
-    myBind(context: any, ...rest: any[]): any;
+    myBind<T, R>(
+      this: (this: IObject, ...args: T[]) => R,
+      thisArg: IObject,
+      ...args: T[]
+    ): (...args: T[]) => R;
   }
+}
+
+interface IObject {
+  [key: string]: any;
 }
 
 Function.prototype.myBind = function (context, ...rest) {
   let fn = this;
-  const callback: unique symbol = Symbol();
-  return function (...args: any[]) {
+  const callback: string = Symbol() as unknown as string;
+  return function (...args) {
     context[callback] = fn;
     const result = context[callback](...rest.concat(args));
     delete context[callback];
@@ -17,12 +25,16 @@ Function.prototype.myBind = function (context, ...rest) {
 
 declare global {
   interface Function {
-    myCall(context: any): any;
+    myCall<T, R>(
+      this: (this: IObject, ...args: T[]) => R,
+      thisArg: IObject,
+      ...args: T[]
+    ): (...args: T[]) => R;
   }
 }
 
-Function.prototype.myCall = function (context, ...args: any[]) {
-  const callback: unique symbol = Symbol();
+Function.prototype.myCall = function (context, ...args) {
+  const callback: string = Symbol() as unknown as string;
   context[callback] = this;
   const result = context[callback](...args);
   delete context[callback];
@@ -108,21 +120,17 @@ Array.prototype.myForEach = function (callback) {
   }
 };
 
-interface IObject {
-  [key: string]: any;
-}
-
 declare global {
   interface Array<T> {
-    myReduce(
+    myReduce<U>(
       callback: (
-        accumulator: any[] | number | IObject,
+        accumulator: U[] | number | IObject,
         arrItem: T,
         index?: number,
         arr?: T[]
-      ) => any[] | number | IObject,
-      acc?: any[] | number | IObject
-    ): any[] | number | IObject;
+      ) => U[] | number | IObject,
+      acc?: U[] | number | IObject
+    ): U[] | number | IObject;
   }
 }
 

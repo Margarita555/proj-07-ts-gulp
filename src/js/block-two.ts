@@ -1,10 +1,10 @@
 declare global {
   interface Function {
-    myBind<T, R>(
-      this: (this: IObject, ...args: T[]) => R,
+    myBind<T, Output>(
+      this: (this: IObject, ...args: T[]) => Output,
       thisArg: IObject,
       ...args: T[]
-    ): (...args: T[]) => R;
+    ): (...args: T[]) => Output;
   }
 }
 
@@ -25,11 +25,11 @@ Function.prototype.myBind = function (context, ...rest) {
 
 declare global {
   interface Function {
-    myCall<T, R>(
-      this: (this: IObject, ...args: T[]) => R | void,
+    myCall<T, Output>(
+      this: (this: IObject, ...args: T[]) => Output,
       thisArg: IObject,
       ...args: T[]
-    ): R | void;
+    ): Output;
   }
 }
 

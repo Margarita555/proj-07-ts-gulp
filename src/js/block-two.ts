@@ -1,10 +1,10 @@
 declare global {
   interface Function {
-    myBind<T, Output>(
-      this: (this: IObject, ...args: T[]) => Output,
+    myBind<T, K>(
+      this: (this: IObject, ...args: T[]) => K,
       thisArg: IObject,
       ...args: T[]
-    ): (...args: T[]) => Output;
+    ): (...args: T[]) => K;
   }
 }
 
@@ -23,24 +23,60 @@ Function.prototype.myBind = function (context, ...rest) {
   };
 };
 
+// declare global {
+//   interface Function {
+//     myCall<T, Output>(
+//       this: (this: IObject, ...args: T[]) => Output,
+//       thisArg: IObject,
+//       ...args: T[]
+//     ): Output;
+//   }
+// }
+
+// Function.prototype.myCall = function (context, ...args) {
+//   const callback: string = Symbol() as unknown as string;
+//   context[callback] = this;
+//   const result = context[callback](...args);
+//   delete context[callback];
+//   return result;
+// };
+
 declare global {
   interface Function {
-    myCall<T, Output>(
-      this: (this: IObject, ...args: T[]) => Output,
+    myCall<T1, T2, K>(
+      this: (a1: T1, a2: T2) => K,
       thisArg: IObject,
-      ...args: T[]
-    ): Output;
+      ...args: [T1, T2]
+    ): K;
+    myCall<T1, T2, T3, K>(
+      this: (a1: T1, a2: T2, a3: T3) => K,
+      thisArg: IObject,
+      ...args: [T1, T2, T3]
+    ): K;
+    myCall<T1, T2, T3, T4, K>(
+      this: (a1: T1, a2: T2, a3: T3, a4: T4) => K,
+      thisArg: IObject,
+      ...args: [T1, T2, T3, T4]
+    ): K;
+    myCall<T1, T2, T3, T4, T5, K>(
+      this: (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5) => K,
+      thisArg: IObject,
+      ...args: [T1, T2, T3, T4, T5]
+    ): K;
   }
 }
 
-Function.prototype.myCall = function (context, ...args) {
+Function.prototype.myCall = function myCall<T, K>(
+  this: (...args: T[]) => K,
+  context: IObject,
+  ...args: T[]
+): K {
   const callback: string = Symbol() as unknown as string;
   context[callback] = this;
   const result = context[callback](...args);
   delete context[callback];
   return result;
 };
-
 //  Написать свою реализацию функций для работы с массивами, которые являются аналогами следующих функций: map, filter, reduce, find, forEach.
 //  */
 declare global {

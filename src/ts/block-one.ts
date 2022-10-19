@@ -2,6 +2,12 @@ declare global {
   interface String {
     mySplit(seperator?: string): string[];
   }
+  interface Array<T> {
+    myJoin(): string;
+    myReverse(): T[];
+    myPush(item: T): T[];
+    mySlice(begin: number, end: number): T[];
+  }
 }
 
 String.prototype.mySplit = function (seperator) {
@@ -25,12 +31,6 @@ String.prototype.mySplit = function (seperator) {
   return splitArray;
 };
 
-declare global {
-  interface Array<T> {
-    myJoin(): string;
-  }
-}
-
 Array.prototype.myJoin = function () {
   let str: string = this;
   let newString: string = "";
@@ -39,12 +39,6 @@ Array.prototype.myJoin = function () {
   }
   return newString;
 };
-
-declare global {
-  interface Array<T> {
-    myReverse(): T[];
-  }
-}
 
 Array.prototype.myReverse = function () {
   const arr: any[] = this;
@@ -55,12 +49,6 @@ Array.prototype.myReverse = function () {
   return newArr;
 };
 
-declare global {
-  interface Array<T> {
-    myPush(item: T): T[];
-  }
-}
-
 Array.prototype.myPush = function (item) {
   const arr: any[] = this;
   const length: number = arr.length;
@@ -68,11 +56,6 @@ Array.prototype.myPush = function (item) {
   return arr;
 };
 
-declare global {
-  interface Array<T> {
-    mySlice(begin: number, end: number): T[];
-  }
-}
 Array.prototype.mySlice = function (begin, end) {
   const arr: any[] = this;
   let newArr: any[] = [];
@@ -81,7 +64,6 @@ Array.prototype.mySlice = function (begin, end) {
   }
   return newArr;
 };
-
 // ============ TASK 1 ==========================
 // Написать функцию которая проверяет являются две строки анаграммой или нет
 
@@ -182,13 +164,21 @@ function calculateWords(sentence: string): {} {
 }
 
 // // ============ TASK 7 ==========================
-// // Вычислить периметр и площадь для прямоугольника, треугольника и круга. С помощью конструктора и классов.
+// // Вычислить периметр и площадь для прямоугольника, треугольника и круга.
 
-class Rectangle {
+abstract class Shape {
+  constructor() {}
+
+  abstract perimeter(): number;
+  abstract square(): number;
+}
+
+class Rectangle extends Shape {
   width: number;
   height: number;
 
   constructor(width: number, height: number) {
+    super();
     this.width = width;
     this.height = height;
   }
@@ -201,13 +191,14 @@ class Rectangle {
   }
 }
 
-class Triangle {
+class Triangle extends Shape {
   height: number;
   base: number;
   side1: number;
   side2: number;
 
   constructor(height: number, base: number, side1: number, side2: number) {
+    super();
     this.height = height;
     this.base = base;
     this.side1 = side1;
@@ -222,9 +213,10 @@ class Triangle {
   }
 }
 
-class Circle {
+class Circle extends Shape {
   radius: number;
   constructor(radius: number) {
+    super();
     this.radius = radius;
   }
 
@@ -287,11 +279,7 @@ function arrayElementsSum(arr: number[], callback: MyCallback): number {
   return sum;
 }
 
-function arrayElementsSumRecursion(
-  arr: number[],
-  callback: MyCallback,
-  index: number
-): number {
+function arrayElementsSumRecursion(arr: number[], callback: MyCallback, index: number): number {
   index = index || 0;
 
   if (arr.length <= index) {
@@ -332,7 +320,7 @@ function toBinary(num: number): string {
 
 function toDec(num: string): number {
   let result: number = 0;
-  let arr: string[] = num.mySplit("");
+  let arr: string[] = num.split("");
 
   for (let i: number = 0; i < arr.length; i += 1) {
     result += Number(arr[i]) * myMathPow(2, arr.length - 1 - i);
@@ -382,12 +370,7 @@ function countElementsQuantity(arr: number[][], callback: MyCallback): number {
 // // ============ TASK 13==========================
 // // Посчитать сумму значений чисел от min до max (всех, только тех которые кратны 3, только положительные). Нарисовать блок схему. Реализовать также с помощью рекурсии.
 
-function calcSumByMinMax(
-  arr: number[],
-  min: number,
-  max: number,
-  callback: MyCallback
-): number {
+function calcSumByMinMax(arr: number[], min: number, max: number, callback: MyCallback): number {
   let newArr: number[] = arr.mySlice(min - 1, max);
   let sum: number = 0;
   for (let i: number = 0; i < newArr.length; i += 1) {
@@ -398,19 +381,10 @@ function calcSumByMinMax(
   return sum;
 }
 
-function calcSumByMinMaxRecursion(
-  arr: number[],
-  min: number,
-  max: number,
-  callback: MyCallback
-): number {
-  let newArr: number[] = arr.mySlice(min - 1, max);
+function calcSumByMinMaxRecursion(arr: number[], min: number, max: number, callback: MyCallback): number {
+  let newArr: number[] = arr.slice(min - 1, max);
   let i: number = 0;
-  let total: number = (function sum(
-    newArr: number[],
-    i: number,
-    callback: MyCallback
-  ): number {
+  let total: number = (function sum(newArr: number[], i: number, callback: MyCallback): number {
     let index: number = i || 0;
     if (newArr.length <= index) {
       return 0;
@@ -440,10 +414,7 @@ function countArithmeticAverage(arr: number[], callback: MyCallback): number {
   return Math.floor(sum / len);
 }
 
-function countDimensionalArrayArithmeticAverage(
-  arr: number[][],
-  callback: MyCallback
-): number {
+function countDimensionalArrayArithmeticAverage(arr: number[][], callback: MyCallback): number {
   let sum: number = 0;
   let len: number = 0;
 
@@ -482,9 +453,9 @@ function addMatrixes(matrix1: number[][], matrix2: number[][]): number[][] {
   let newMatrix: number[][] = [];
 
   for (let i: number = 0; i < matrix1.length; i++) {
-    newMatrix.push([]);
+    newMatrix.myPush([]);
     for (let j: number = 0; j < matrix1.length; j++) {
-      newMatrix[i].push(matrix1[i][j] + matrix2[i][j]);
+      newMatrix[i].myPush(matrix1[i][j] + matrix2[i][j]);
     }
   }
   return newMatrix;
@@ -509,10 +480,7 @@ function deleteString(matrix: number[][], value: number): number[][] {
   return matrix;
 }
 
-function deleteColumn(
-  matrix: number[][],
-  value: number
-): (number | number[])[] {
+function deleteColumn(matrix: number[][], value: number): (number | number[])[] {
   if (matrix.length === 0) {
     return [];
   }
@@ -561,10 +529,7 @@ function countZeroElements(matrix: number[][], callback: MyCallback): number {
   return count;
 }
 
-function countElementsAverageValue(
-  matrix: number[][],
-  callback: MyCallback
-): number {
+function countElementsAverageValue(matrix: number[][], callback: MyCallback): number {
   let sum: number = 0;
   let count: number = 0;
 

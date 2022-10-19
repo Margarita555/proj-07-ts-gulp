@@ -86,6 +86,7 @@ class TreeNode implements INode {
 declare global {
   interface Array<T> {
     bubbleSort(callback: (itemFirst: T, itemSecond: T) => boolean): T[];
+    selectionSort(callback: (itemFirst: T, itemSecond: T) => boolean): T[];
   }
 }
 
@@ -93,10 +94,7 @@ Array.prototype.bubbleSort = function (callback) {
   let isFlag: boolean = typeof callback !== "function";
   for (let i: number = this.length - 1; i > 0; i--) {
     for (let j: number = 0; j < i; j++) {
-      if (
-        (callback && callback(this[j], this[j + 1])) ||
-        (isFlag && this[j] > this[j + 1])
-      ) {
+      if ((callback && callback(this[j], this[j + 1])) || (isFlag && this[j] > this[j + 1])) {
         [this[j], this[j + 1]] = [this[j + 1], this[j]];
       }
     }
@@ -104,21 +102,12 @@ Array.prototype.bubbleSort = function (callback) {
   return this;
 };
 
-declare global {
-  interface Array<T> {
-    selectionSort(callback: (itemFirst: T, itemSecond: T) => boolean): T[];
-  }
-}
-
 Array.prototype.selectionSort = function (callback) {
   let isFlag: boolean = typeof callback !== "function";
   for (let i: number = 0; i < this.length - 1; i++) {
     let min: number = i;
     for (let j: number = 0; j < this.length; j++) {
-      if (
-        (callback && callback(this[j], this[i + 1])) ||
-        (isFlag && this[j] > this[j + 1])
-      ) {
+      if ((callback && callback(this[j], this[i + 1])) || (isFlag && this[j] > this[j + 1])) {
         min = j;
         [this[i + 1], this[min]] = [this[min], this[i + 1]];
       }

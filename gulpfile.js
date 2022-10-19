@@ -29,7 +29,7 @@ var watchedBrowserify = watchify(
   browserify({
     basedir: ".",
     debug: true,
-    entries: ["src/js/main.ts"],
+    entries: ["src/ts/main.ts"],
     cache: {},
     packageCache: {},
   })
@@ -95,9 +95,7 @@ function templates() {
         root: "exports",
         noRedeclare: true,
         processName: function (filePath) {
-          return declare.processNameByPath(
-            filePath.replace("src/templates/", "")
-          );
+          return declare.processNameByPath(filePath.replace("src/templates/", ""));
         },
       })
     )
@@ -120,11 +118,6 @@ function watch() {
   // gulp.watch(paths.images.src, img);
 }
 
-exports.default = gulp.series(
-  clear,
-  html,
-  gulp.parallel(scss, bundle, templates),
-  watch
-);
+exports.default = gulp.series(clear, html, gulp.parallel(scss, bundle, templates), watch);
 watchedBrowserify.on("update", bundle);
 watchedBrowserify.on("log", fancy_log);

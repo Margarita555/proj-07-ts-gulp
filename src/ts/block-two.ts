@@ -10,8 +10,8 @@ declare global {
     ): U | number;
   }
   interface Function {
-    myBind<T, K>(this: (this: IObject, ...args: T[]) => K, context: IObject, ...args: T[]): (...args: T[]) => K;
-    myCall<T, K>(this: (this: IObject, ...args: T[]) => K, context: IObject, ...args: T[]): K;
+    myBind<T, K>(this: Function, context: IObject, ...args: T[]): (...args: T[]) => K;
+    myCall<T, K>(this: Function, context: IObject, ...args: T[]): K;
   }
 }
 

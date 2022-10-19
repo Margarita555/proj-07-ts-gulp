@@ -5,13 +5,13 @@ declare global {
     myFind(callback: (arrItem: T, i?: number, arr?: T[]) => T | undefined): T[] | undefined;
     myForEach(callback: (arrItem: T, index?: number, arr?: T[]) => void): void;
     myReduce<U>(
-      callback: (accumulator: U[] | number | IObject, arrItem: T, index?: number, arr?: T[]) => U[] | number | IObject,
-      acc?: U[] | number | IObject
-    ): U[] | number | IObject;
+      callback: (accumulator: U | number, arrItem: T, index?: number, arr?: T[]) => U | number,
+      acc?: U | number
+    ): U | number;
   }
   interface Function {
-    myBind<T, K>(this: (this: IObject, ...args: T[]) => K, thisArg: IObject, ...args: T[]): (...args: T[]) => K;
-    myCall<T, K>(this: (this: IObject, ...args: T[]) => K, thisArg: IObject, ...args: T[]): K;
+    myBind<T, K>(this: (this: IObject, ...args: T[]) => K, context: IObject, ...args: T[]): (...args: T[]) => K;
+    myCall<T, K>(this: (this: IObject, ...args: T[]) => K, context: IObject, ...args: T[]): K;
   }
 }
 

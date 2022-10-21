@@ -1,16 +1,7 @@
-interface INode {
-  value: number | INode;
-  left: INode | null;
-  right: INode | null;
-  insert(num: number): void;
-  search(num: number): null | number | ((num: number) => number | null);
-  delete(num: number, currentNode: INode): INode;
-}
-
-class TreeNode implements INode {
-  value: number | INode;
-  left: INode | null;
-  right: INode | null;
+class TreeNode {
+  value: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
 
   constructor(num: number) {
     this.value = num;
@@ -50,8 +41,8 @@ class TreeNode implements INode {
     return this.right!.search(num);
   }
 
-  delete(num: number | INode, currentNode: INode | null): INode {
-    let current: INode | null = currentNode || this;
+  delete(num: number | TreeNode, currentNode: TreeNode | null): TreeNode {
+    let current: TreeNode | null = currentNode || this;
     if (num < current.value) {
       current.left = this.delete(num, current.left);
       return current;
@@ -69,7 +60,7 @@ class TreeNode implements INode {
       if (current.right === null) {
         return current.left;
       }
-      let replacedNode: INode = current.right;
+      let replacedNode: TreeNode = current.right;
       while (replacedNode.left !== null) {
         replacedNode = replacedNode.left;
       }

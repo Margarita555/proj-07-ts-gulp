@@ -1,53 +1,53 @@
-class TreeNode {
-  value: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
+class TreeNode<T> {
+  value: T;
+  left: TreeNode<T> | null;
+  right: TreeNode<T> | null;
 
-  constructor(num: number) {
-    this.value = num;
+  constructor(value: T) {
+    this.value = value;
     this.left = null;
     this.right = null;
   }
 
-  insert(num: number) {
+  insert(value: T) {
     if (!this.value) {
-      this.value = num;
+      this.value = value;
       return;
     }
-    if (num < this.value && this.left) {
-      this.left.insert(num);
-    } else if (num < this.value && this.left === null) {
-      this.left = new TreeNode(num);
+    if (value < this.value && this.left) {
+      this.left.insert(value);
+    } else if (value < this.value && this.left === null) {
+      this.left = new TreeNode(value);
       return;
     }
-    if (num > this.value && this.right) {
-      this.right.insert(num);
-    } else if (num > this.value && this.right === null) {
-      this.right = new TreeNode(num);
+    if (value > this.value && this.right) {
+      this.right.insert(value);
+    } else if (value > this.value && this.right === null) {
+      this.right = new TreeNode(value);
       return;
     }
   }
 
-  search(num: number): null | number | ((num: number) => number | null) {
+  search(value: T): null | T | ((value: T) => T | null) {
     if (this.value === null) {
       return null;
     }
-    if (this.value === num) {
+    if (this.value === value) {
       return this.value;
     }
-    if (num < this.value) {
-      return this.left!.search(num);
+    if (value < this.value) {
+      return this.left!.search(value);
     }
-    return this.right!.search(num);
+    return this.right!.search(value);
   }
 
-  delete(num: number | TreeNode, currentNode: TreeNode | null): TreeNode {
-    let current: TreeNode | null = currentNode || this;
-    if (num < current.value) {
-      current.left = this.delete(num, current.left);
+  delete(value: T | TreeNode<T>, currentNode: TreeNode<T> | null): TreeNode<T> {
+    let current: TreeNode<T> | null = currentNode || this;
+    if (value < current.value) {
+      current.left = this.delete(value, current.left);
       return current;
-    } else if (num > current.value) {
-      current.right = this.delete(num, current.right);
+    } else if (value > current.value) {
+      current.right = this.delete(value, current.right);
       return current;
     } else {
       if (current.left === null && current.right === null) {
@@ -60,7 +60,7 @@ class TreeNode {
       if (current.right === null) {
         return current.left;
       }
-      let replacedNode: TreeNode = current.right;
+      let replacedNode: TreeNode<T> = current.right;
       while (replacedNode.left !== null) {
         replacedNode = replacedNode.left;
       }
